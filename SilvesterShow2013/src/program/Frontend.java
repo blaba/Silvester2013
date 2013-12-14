@@ -27,27 +27,25 @@ public class Frontend extends JFrame implements ActionListener{
 	static final long serialVersionUID = 1;
 	public static int i = 0, j = 0, z = 0;
     static JLabel time, countdown, anleitung, aufgabeHead, nachrichtHead, picture;
-    static JTextArea message,message1, message2, aufgabe;
-    static JScrollPane scroll ;
-    static StyledDocument doc;
-    static StyledDocument doc1;
+    static JTextPane message,message1, message2, aufgabe;
     GraphicsDevice[] device;
     private JButton kleiner,fullscreen;
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) dim.getHeight();
     int y = (int) dim.getWidth();
-    Image img;
-    Image pic = null;
+    Image img,pic;
     static String anleitungText1 ="Sende normale Nachricht an 0151 17518181 für eine normale Nachricht!";
     static String anleitungText2 ="Sende Musik am Anfang der Nachricht an 0151 17518181 für einen Musikwunsch!";
     static String anleitungText3 ="Sende Aufgabe am Anfang der Nachricht an 0151 17518181 um eine Aufgabe abzugeben!";
+    static StyledDocument messageDoc;
     static String messageHeadline ="Eure Nachrichten:";
     static String aufgabeHeadline = "Aktuelle Aufgabe:";
     static String messageBuff = "";
     static String messageBuff1 = "";
     static String messageBuff2= "";
     static String hol;
-	static Border bord = new CompoundBorder(new LineBorder(Color.white, 2,false), new LineBorder(Color.black, 3,false));
+    static Insets inset1= new Insets(20, 5, 20, 5);
+	static Border bord = new CompoundBorder(new LineBorder(Color.white, 2,false), new LineBorder(Color.black, 5,false));
 	static Font font1 = new Font("Tahoma",0,20);
 	static Font font2 = new Font("Tahoma", 0, 18);
 
@@ -100,7 +98,6 @@ public class Frontend extends JFrame implements ActionListener{
 		countdown.setBackground(Color.black);
 		countdown.setForeground(Color.white);
 		countdown.setFont(new java.awt.Font("Tahoma", 0, 48));
-		//countdown.setBorder(bord);
 		countdown.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		nachrichtHead = new JLabel();
@@ -111,43 +108,62 @@ public class Frontend extends JFrame implements ActionListener{
 		StyleContext.NamedStyle centerStyle = StyleContext.getDefaultStyleContext().new NamedStyle();
 		StyleConstants.setAlignment(centerStyle,StyleConstants.ALIGN_CENTER);
 		StyleConstants.setForeground(centerStyle, Color.white);
-		StyleConstants.setFontSize(centerStyle, 24);
+		StyleConstants.setFontSize(centerStyle, 22);
 		StyleConstants.setFontFamily(centerStyle, "Tahoma");
-		StyleConstants.setSpaceAbove(centerStyle, 20);
+		StyleConstants.setSpaceAbove(centerStyle, 5);
 		
-		message = new JTextArea();
-		message.setForeground(Color.white);
-		message.setBackground(Color.black);
+		
+		
+		message = new JTextPane();
+		message.setText("Anfang");
+		messageDoc = message.getStyledDocument();
+		try {
+			messageDoc.insertString(0, "Kleiner text zum testen des tests", centerStyle);
+		} catch (BadLocationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//message.setDocument(messageDoc);
+		message.setStyledDocument(messageDoc);
+		try {
+			System.out.println(messageDoc.getText(0, messageDoc.getLength()));
+		} catch (BadLocationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		/*message.setBackground(Color.black);
+		message.setLogicalStyle(centerStyle);
 		message.setFont(font2);
 		message.setBorder(bord);
-		message.setLineWrap(true);
-		message.setWrapStyleWord(true);
+		message.setFocusable(false);
 		
-		message1 = new JTextArea();
-		message1.setForeground(Color.white);
+		message1 = new JTextPane();
 		message1.setBackground(Color.black);
+		message1.setLogicalStyle(centerStyle);
 		message1.setFont(font2);
 		message1.setBorder(bord);
-		message1.setLineWrap(true);
-		message1.setWrapStyleWord(true);
+		message1.setFocusable(false);
 		
-		message2 = new JTextArea();
-		message2.setForeground(Color.white);
+		message2 = new JTextPane();
 		message2.setBackground(Color.black);
+		message2.setLogicalStyle(centerStyle);
 		message2.setFont(font2);
 		message2.setBorder(bord);
-		message2.setLineWrap(true);
-		message2.setWrapStyleWord(true);
-		
+		message2.setFocusable(false);
+		*/
 		
 		aufgabeHead = new JLabel();
 		aufgabeHead.setForeground(Color.white);
 		aufgabeHead.setFont(font1);
 		aufgabeHead.setText(aufgabeHeadline);
-		aufgabe = new JTextArea();
+		
+		aufgabe = new JTextPane();
 		aufgabe.setBackground(Color.black);
+		aufgabe.setLogicalStyle(centerStyle);
+		aufgabe.setFont(font2);
 		aufgabe.setBorder(bord);
-		aufgabe.setLineWrap(true);
+		aufgabe.setFocusable(false);
+		//aufgabe.setLineWrap(true);
 		
 				
 		anleitung = new JLabel();
@@ -184,8 +200,8 @@ public class Frontend extends JFrame implements ActionListener{
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,true)
 								.addComponent(nachrichtHead, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(message, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								//.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								//.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,true)
 								.addComponent(aufgabeHead, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -207,8 +223,8 @@ public class Frontend extends JFrame implements ActionListener{
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(nachrichtHead)
 								.addComponent(message, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								//.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								//.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								)
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(aufgabeHead)
