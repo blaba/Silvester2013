@@ -24,7 +24,11 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class Frontend extends JFrame implements ActionListener{
+<<<<<<< HEAD
 	static final long serialVersionUID = 1;
+=======
+	static final long serialVersionUID = 1.1;
+>>>>>>> branch 'master' of https://github.com/blaba/Silvester2013.git
 	public static int i = 0, j = 0, z = 0;
     static JLabel time, countdown, anleitung, aufgabeHead, nachrichtHead, picture;
     static JTextPane message,message1, message2, aufgabe;
@@ -115,16 +119,18 @@ public class Frontend extends JFrame implements ActionListener{
 		
 		
 		message = new JTextPane();
-		message.setText("Anfang");
+		message.setText("Anfang des Untergangs");
+		message.setBackground(Color.black);
 		messageDoc = message.getStyledDocument();
 		try {
-			messageDoc.insertString(0, "Kleiner text zum testen des tests", centerStyle);
+			messageDoc.insertString(0, "Kleiner text zum testen des tests\n", centerStyle);
 		} catch (BadLocationException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		//message.setDocument(messageDoc);
 		message.setStyledDocument(messageDoc);
+		messageDoc.setLogicalStyle(0, centerStyle);
 		try {
 			System.out.println(messageDoc.getText(0, messageDoc.getLength()));
 		} catch (BadLocationException e1) {
@@ -252,13 +258,13 @@ public class Frontend extends JFrame implements ActionListener{
 					hol = Backend.messages();
 					if (messageBuff.isEmpty() || !messageBuff.equals(hol)){
 						if(!(hol == null)){
-							messageBuff2 = messageBuff1;
-							messageBuff1 = messageBuff;
 							messageBuff = hol;
-							message.setText(messageBuff);
-							
-							message1.setText(messageBuff1);
-							message2.setText(messageBuff2);
+							try {
+								messageDoc.insertString(0, messageBuff, null);
+							} catch (BadLocationException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 					i = 0;

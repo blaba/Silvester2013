@@ -55,7 +55,7 @@ public class Backend {
 			ResultSet namen = stat2.executeQuery(nameAbruf);
 			if(nachrichten.next()){
 				if(namen.next()){
-					nachricht =namen.getString(1) +" schrieb:\n" +nachrichten.getString(1);	
+					nachricht =namen.getString(1) +" schrieb:\n" +nachrichten.getString(1)+"\n\n";	
 					nrID++;
 					return nachricht;
 				}
@@ -71,30 +71,17 @@ public class Backend {
 	public static String aufgaben(){
 		String ausgabe = "";
 		try{
-			String aufgabeAbruf = "SELECT aufgabe,id FROM aufgaben WHERE anzahl < "+durchlauf+" ORDER BY RAND() LIMIT 1";
+			String aufgabeAbruf = "SELECT aufgabe,id FROM aufgaben ORDER BY RAND() LIMIT 1";
 			Statement stat0 = connection.createStatement();
 			ResultSet aufgaben = stat0.executeQuery(aufgabeAbruf);
-			if(aufgaben.next()){
-				String aufgabeName = "SELECT name FROM user ORDER BY RAND() LIMIT 1";
-				Statement stat1 = connection.createStatement();
-				ResultSet namen = stat1.executeQuery(aufgabeName);
-				String aufgabenname= aufgaben.getString(1);
-				aufgabeID = aufgaben.getInt(2);
-				System.out.println(aufgabeID);
-				String name="";
-				if(namen.next()){
-					name = namen.getString(1);
-				}
-				ausgabe = name +": " + aufgabenname;
-				String nameEintrag = "UPDATE aufgaben SET name = '"+name+"' WHERE ID = '"+aufgabeID+"'";
-				Statement stat3 = connection.createStatement();
-				stat3.executeUpdate(nameEintrag);
-				String aufgabeHinauf = "UPDATE aufgaben SET anzahl = anzahl + 1 WHERE ID = '" +aufgabeID+"'";
-				Statement stat2 = connection.createStatement();
-				stat2.executeUpdate(aufgabeHinauf);
-			}
-			else
-				durchlauf++;
+			
+			String aufgabeName = "SELECT name FROM user ORDER BY RAND() LIMIT 1";
+			Statement stat1 = connection.createStatement();
+			ResultSet namen = stat1.executeQuery(aufgabeName);
+			if(aufgaben.next()&&namen.next())
+				ausgabe = namen.getString(1)+": " +aufgaben.getString(1);
+			else 
+				ausgabe = "Keine Aufgabe? :(";
 		}
 		catch(Exception e){
 			System.out.println(e);
