@@ -24,7 +24,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class Frontend extends JFrame implements ActionListener{
-	static final long serialVersionUID = 1.1;
+	static final long serialVersionUID = 1;
 	public static int i = 0, j = 0, z = 0;
     static JLabel time, countdown, anleitung, aufgabeHead, nachrichtHead, picture;
     static JTextPane message,message1, message2, aufgabe;
