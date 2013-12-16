@@ -24,11 +24,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 public class Frontend extends JFrame implements ActionListener{
-<<<<<<< HEAD
 	static final long serialVersionUID = 1;
-=======
-	static final long serialVersionUID = 1.1;
->>>>>>> branch 'master' of https://github.com/blaba/Silvester2013.git
 	public static int i = 0, j = 0, z = 0;
     static JLabel time, countdown, anleitung, aufgabeHead, nachrichtHead, picture;
     static JTextPane message,message1, message2, aufgabe;
