@@ -38,8 +38,8 @@ public class Frontend extends JFrame implements ActionListener{
     static String anleitungText2 ="Sende Musik am Anfang der Nachricht an 0151 17518181 für einen Musikwunsch!";
     static String anleitungText3 ="Sende Aufgabe am Anfang der Nachricht an 0151 17518181 um eine Aufgabe abzugeben!";
     static StyledDocument messageDoc;
-    static String messageHeadline ="Eure Nachrichten:";
-    static String aufgabeHeadline = "Aktuelle Aufgabe:";
+    static String messageHeadline =" ";
+    static String aufgabeHeadline = " ";
     static String messageBuff = "";
     static String messageBuff1 = "";
     static String messageBuff2= "";
@@ -115,44 +115,12 @@ public class Frontend extends JFrame implements ActionListener{
 		
 		
 		message = new JTextPane();
-		message.setText("Anfang des Untergangs");
+		message.setText("Anfang der Nachrichten");
 		message.setBackground(Color.black);
 		messageDoc = message.getStyledDocument();
-		try {
-			messageDoc.insertString(0, "Kleiner text zum testen des tests\n", centerStyle);
-		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		//message.setDocument(messageDoc);
-		message.setStyledDocument(messageDoc);
 		messageDoc.setLogicalStyle(0, centerStyle);
-		try {
-			System.out.println(messageDoc.getText(0, messageDoc.getLength()));
-		} catch (BadLocationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		/*message.setBackground(Color.black);
-		message.setLogicalStyle(centerStyle);
-		message.setFont(font2);
-		message.setBorder(bord);
+		message.setStyledDocument(messageDoc);
 		message.setFocusable(false);
-		
-		message1 = new JTextPane();
-		message1.setBackground(Color.black);
-		message1.setLogicalStyle(centerStyle);
-		message1.setFont(font2);
-		message1.setBorder(bord);
-		message1.setFocusable(false);
-		
-		message2 = new JTextPane();
-		message2.setBackground(Color.black);
-		message2.setLogicalStyle(centerStyle);
-		message2.setFont(font2);
-		message2.setBorder(bord);
-		message2.setFocusable(false);
-		*/
 		
 		aufgabeHead = new JLabel();
 		aufgabeHead.setForeground(Color.white);
@@ -165,9 +133,7 @@ public class Frontend extends JFrame implements ActionListener{
 		aufgabe.setFont(font2);
 		aufgabe.setBorder(bord);
 		aufgabe.setFocusable(false);
-		//aufgabe.setLineWrap(true);
 		
-				
 		anleitung = new JLabel();
 		anleitung.setForeground(Color.white);
 		anleitung.setText(anleitungText1);
@@ -200,15 +166,13 @@ public class Frontend extends JFrame implements ActionListener{
 				.addComponent(countdown,0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 				.addGroup(layout.createSequentialGroup()
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,true)
-								.addComponent(nachrichtHead, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(message, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								//.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								//.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(nachrichtHead, 0, countdown.getWidth()/2, Short.MAX_VALUE)
+								.addComponent(message, 0, countdown.getWidth()/2, Short.MAX_VALUE)
 								)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,true)
-								.addComponent(aufgabeHead, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(aufgabe, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(picture, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(aufgabeHead, 0, countdown.getWidth()/2, Short.MAX_VALUE)
+								.addComponent(aufgabe, 0, countdown.getWidth()/2, Short.MAX_VALUE)
+								.addComponent(picture, 0, countdown.getWidth()/2, Short.MAX_VALUE)
 								)
 						)
 				.addComponent(anleitung,0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -225,17 +189,16 @@ public class Frontend extends JFrame implements ActionListener{
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(nachrichtHead)
 								.addComponent(message, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								//.addComponent(message1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								//.addComponent(message2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								)
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(aufgabeHead)
-								.addComponent(aufgabe, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(picture, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(aufgabe, 0, message.getHeight()/3, Short.MAX_VALUE)
+								.addComponent(picture, 0,(int) (message.getHeight()/1.5), Short.MAX_VALUE)
 								)
 						)
 				.addComponent(anleitung)
 				);
+		System.out.println(aufgabe.getSize().height*GroupLayout.DEFAULT_SIZE);
 		fullscreen.setVisible(false);
 		this.setVisible(true);
 	}
@@ -267,7 +230,7 @@ public class Frontend extends JFrame implements ActionListener{
 					
 				}
 				if (j == 3){
-					aufgabe.setText( " \n \n \n \n \n \n " +Backend.aufgaben());
+					aufgabe.setText(Backend.aufgaben());
 					j = 0;
 				}
 				if (z == 10)

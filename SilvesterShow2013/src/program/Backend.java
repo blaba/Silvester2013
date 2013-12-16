@@ -79,7 +79,7 @@ public class Backend {
 			Statement stat1 = connection.createStatement();
 			ResultSet namen = stat1.executeQuery(aufgabeName);
 			if(aufgaben.next()&&namen.next())
-				ausgabe = namen.getString(1)+": " +aufgaben.getString(1);
+				ausgabe = "An "+namen.getString(1)+":\n " +aufgaben.getString(1);
 			else 
 				ausgabe = "Keine Aufgabe? :(";
 		}
