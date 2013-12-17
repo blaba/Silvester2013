@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Timer;
@@ -16,6 +17,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -25,7 +27,7 @@ import javax.swing.text.StyledDocument;
 
 public class Frontend extends JFrame implements ActionListener{
 	static final long serialVersionUID = 1;
-	public static int i = 0, j = 0, z = 0;
+	public static int i = 0, j = 0, z = 0, b = 0;
     static JLabel time, countdown, anleitung, aufgabeHead, nachrichtHead, picture;
     static JTextPane message,message1, message2, aufgabe;
     GraphicsDevice[] device;
@@ -41,11 +43,10 @@ public class Frontend extends JFrame implements ActionListener{
     static String messageHeadline =" ";
     static String aufgabeHeadline = " ";
     static String messageBuff = "";
-    static String messageBuff1 = "";
-    static String messageBuff2= "";
-    static String hol;
+    static byte[] messageBytes;
+    static String hol,messageOutput;
     static Insets inset1= new Insets(20, 5, 20, 5);
-	static Border bord = new CompoundBorder(new LineBorder(Color.white, 2,false), new LineBorder(Color.black, 5,false));
+	static Border bord = new CompoundBorder(new MatteBorder(0,0,0,2,Color.white), new LineBorder(Color.black, 5,false));
 	static Font font1 = new Font("Tahoma",0,20);
 	static Font font2 = new Font("Tahoma", 0, 18);
 
@@ -121,6 +122,7 @@ public class Frontend extends JFrame implements ActionListener{
 		messageDoc.setLogicalStyle(0, centerStyle);
 		message.setStyledDocument(messageDoc);
 		message.setFocusable(false);
+		message.setBorder(bord);
 		
 		aufgabeHead = new JLabel();
 		aufgabeHead.setForeground(Color.white);
@@ -131,7 +133,6 @@ public class Frontend extends JFrame implements ActionListener{
 		aufgabe.setBackground(Color.black);
 		aufgabe.setLogicalStyle(centerStyle);
 		aufgabe.setFont(font2);
-		aufgabe.setBorder(bord);
 		aufgabe.setFocusable(false);
 		
 		anleitung = new JLabel();
@@ -140,17 +141,17 @@ public class Frontend extends JFrame implements ActionListener{
 		anleitung.setFont(font1);
 		anleitung.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		
 		try{
 			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de/html/silvester/test.PNG");
 			img = ImageIO.read(url);
 			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
+			image.setImage(image.getImage().getScaledInstance(250, -1 , Image.SCALE_SMOOTH));
 			picture = new JLabel(image);
-			picture.setSize(300, 300);
 		}
 		catch(Exception e){
 			System.out.println(e);
 		}
+		
 		
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -192,13 +193,12 @@ public class Frontend extends JFrame implements ActionListener{
 								)
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(aufgabeHead)
-								.addComponent(aufgabe, 0, message.getHeight()/3, Short.MAX_VALUE)
+								.addComponent(aufgabe, 0, message.getHeight()/4, 180)
 								.addComponent(picture, 0,(int) (message.getHeight()/1.5), Short.MAX_VALUE)
 								)
 						)
 				.addComponent(anleitung)
 				);
-		System.out.println(aufgabe.getSize().height*GroupLayout.DEFAULT_SIZE);
 		fullscreen.setVisible(false);
 		this.setVisible(true);
 	}
@@ -209,6 +209,7 @@ public class Frontend extends JFrame implements ActionListener{
 		TimerTask timertask = new TimerTask() {
 			public void run(){
 				i ++;
+				b ++;
 				j ++;
 				z ++;
 			    time.setText(Backend.time());
@@ -218,8 +219,16 @@ public class Frontend extends JFrame implements ActionListener{
 					if (messageBuff.isEmpty() || !messageBuff.equals(hol)){
 						if(!(hol == null)){
 							messageBuff = hol;
+							messageBytes = hol.getBytes();
+							try{
+								messageOutput = new String(messageBytes, "utf8");
+							}
+							catch(Exception e){
+								System.out.println(e);
+							}
+							
 							try {
-								messageDoc.insertString(0, messageBuff, null);
+								messageDoc.insertString(0, messageOutput, null);
 							} catch (BadLocationException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -228,6 +237,11 @@ public class Frontend extends JFrame implements ActionListener{
 					}
 					i = 0;
 					
+				}
+				if(b == 3){
+					File dir = new File("ftp://knd2:mc284bukkit@blaba.de/html/silvester/");
+					File[] fileList = dir.listFiles();
+					System.out.println(dir);
 				}
 				if (j == 3){
 					aufgabe.setText(Backend.aufgaben());

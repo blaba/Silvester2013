@@ -55,7 +55,9 @@ public class Backend {
 			ResultSet namen = stat2.executeQuery(nameAbruf);
 			if(nachrichten.next()){
 				if(namen.next()){
-					nachricht =namen.getString(1) +" schrieb:\n" +nachrichten.getString(1)+"\n\n";	
+					byte[] namenBytes =namen.getString(1).getBytes();
+					String namenString = new String (namenBytes,"utf-8");
+					nachricht =namenString +" schrieb:\n" +nachrichten.getString(1)+"\n\n";	
 					nrID++;
 					return nachricht;
 				}
@@ -70,6 +72,7 @@ public class Backend {
 	}
 	public static String aufgaben(){
 		String ausgabe = "";
+		byte[] ausgabeBytes;
 		try{
 			String aufgabeAbruf = "SELECT aufgabe,id FROM aufgaben ORDER BY RAND() LIMIT 1";
 			Statement stat0 = connection.createStatement();
@@ -78,8 +81,11 @@ public class Backend {
 			String aufgabeName = "SELECT name FROM user ORDER BY RAND() LIMIT 1";
 			Statement stat1 = connection.createStatement();
 			ResultSet namen = stat1.executeQuery(aufgabeName);
-			if(aufgaben.next()&&namen.next())
-				ausgabe = "An "+namen.getString(1)+":\n " +aufgaben.getString(1);
+			if(aufgaben.next()&&namen.next()){
+				byte[] namenBytes =namen.getString(1).getBytes();
+				String namenString = new String (namenBytes,"utf-8");
+				ausgabe = "An "+namenString+":\n " +aufgaben.getString(1);
+			}
 			else 
 				ausgabe = "Keine Aufgabe? :(";
 		}
