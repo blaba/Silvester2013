@@ -1,13 +1,49 @@
 package program;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.net.ftp.*;
 
 public class Backend {
 	static int nrID,durchlauf,aufgabeID;
 	static Connection connection = null;
 	static String nachricht = "";
+	static FTPClient ftpClient = new FTPClient();
+	public static void connectFTP(){
+		String server = "blaba.de";
+		String user = "knd2";
+		String pwd = "mc284bukkit";
+		int port = 21;
+		try {
+			ftpClient.connect(server,port);
+			System.out.println(ftpClient.getReplyString());
+			ftpClient.login(user, pwd);
+			System.out.println(ftpClient.getReplyString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public static String[] getFilesFTP(){
+		String[] files = null;
+		FTPFile[] ftpFiles = null;
+		
+		try{
+			ftpFiles = ftpClient.listFiles("/html/silvester/pictures");
+			files = ftpClient.listNames("/html/silvester/pictures");	
+			
+			}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return files;
+		
+		
+	}
 	public static Connection connect(){
 		String host = "wan6.ulfcramme.de";
 		String db ="usr_knd2_6";

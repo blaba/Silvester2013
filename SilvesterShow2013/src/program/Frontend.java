@@ -35,7 +35,8 @@ public class Frontend extends JFrame implements ActionListener{
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) dim.getHeight();
     int y = (int) dim.getWidth();
-    Image img,pic;
+    static Image img;
+	Image pic;
     static String anleitungText1 ="Sende normale Nachricht an 0151 17518181 für eine normale Nachricht!";
     static String anleitungText2 ="Sende Musik am Anfang der Nachricht an 0151 17518181 für einen Musikwunsch!";
     static String anleitungText3 ="Sende Aufgabe am Anfang der Nachricht an 0151 17518181 um eine Aufgabe abzugeben!";
@@ -43,6 +44,7 @@ public class Frontend extends JFrame implements ActionListener{
     static String messageHeadline =" ";
     static String aufgabeHeadline = " ";
     static String messageBuff = "";
+    static String[] pictureList;
     static byte[] messageBytes;
     static String hol,messageOutput;
     static Insets inset1= new Insets(20, 5, 20, 5);
@@ -142,10 +144,10 @@ public class Frontend extends JFrame implements ActionListener{
 		anleitung.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		try{
-			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de/html/silvester/test.PNG");
+			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de/html/silvester/pictures/test.PNG");
 			img = ImageIO.read(url);
 			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
-			image.setImage(image.getImage().getScaledInstance(250, -1 , Image.SCALE_SMOOTH));
+			image.setImage(image.getImage().getScaledInstance(350, -1 , Image.SCALE_DEFAULT));
 			picture = new JLabel(image);
 		}
 		catch(Exception e){
@@ -193,7 +195,7 @@ public class Frontend extends JFrame implements ActionListener{
 								)
 						.addGroup(layout.createSequentialGroup()
 								.addComponent(aufgabeHead)
-								.addComponent(aufgabe, 0, message.getHeight()/4, 180)
+								.addComponent(aufgabe, 0, message.getHeight()/4, 150)
 								.addComponent(picture, 0,(int) (message.getHeight()/1.5), Short.MAX_VALUE)
 								)
 						)
@@ -205,11 +207,12 @@ public class Frontend extends JFrame implements ActionListener{
 	
 	public static void main(String[] args){
 		Backend.connect();
+		Backend.connectFTP();
 		new Frontend().setBackground(Color.BLACK);
 		TimerTask timertask = new TimerTask() {
+			@Override
 			public void run(){
 				i ++;
-				b ++;
 				j ++;
 				z ++;
 			    time.setText(Backend.time());
@@ -238,11 +241,7 @@ public class Frontend extends JFrame implements ActionListener{
 					i = 0;
 					
 				}
-				if(b == 3){
-					File dir = new File("ftp://knd2:mc284bukkit@blaba.de/html/silvester/");
-					File[] fileList = dir.listFiles();
-					System.out.println(dir);
-				}
+				
 				if (j == 3){
 					aufgabe.setText(Backend.aufgaben());
 					j = 0;
@@ -258,8 +257,35 @@ public class Frontend extends JFrame implements ActionListener{
 			}
 		};
 		
+		TimerTask timerTask1 = new TimerTask() {
+
+			@Override
+			public void run() {
+				b ++;
+				if(b == 30){
+					pictureList = Backend.getFilesFTP();
+					String pictureURL = pictureList[(int)(pictureList.length*Math.random())];
+					try{
+						URL url = new URL("ftp://knd2:mc284bukkit@blaba.de"+pictureURL);
+						img = ImageIO.read(url);
+						ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
+						image.setImage(image.getImage().getScaledInstance(350, -1 , Image.SCALE_DEFAULT));
+						picture.setIcon(image);
+						System.out.println(url);
+					}
+					catch(Exception e){
+						System.out.println(e);
+					}
+					b = 0;
+				}
+				
+			}
+			
+		};
 		Timer timer = new Timer();
+		Timer timer1 = new Timer();
 		timer.schedule(timertask, 1,1000);
+		timer1.schedule(timerTask1,1,1000);
 	}
 
 
