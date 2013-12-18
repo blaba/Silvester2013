@@ -144,7 +144,7 @@ public class Frontend extends JFrame implements ActionListener{
 		anleitung.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		try{
-			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de/html/silvester/pictures/test.PNG");
+			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de/html/silvester/test.PNG");
 			img = ImageIO.read(url);
 			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
 			image.setImage(image.getImage().getScaledInstance(350, -1 , Image.SCALE_DEFAULT));
