@@ -37,9 +37,9 @@ public class Frontend extends JFrame implements ActionListener{
     int y = (int) dim.getWidth();
     static Image img;
 	Image pic;
-    static String anleitungText1 ="Sende normale Nachricht an 0151 17518181 für eine normale Nachricht!";
-    static String anleitungText2 ="Sende Musik am Anfang der Nachricht an 0151 17518181 für einen Musikwunsch!";
-    static String anleitungText3 ="Sende Aufgabe am Anfang der Nachricht an 0151 17518181 um eine Aufgabe abzugeben!";
+    static String anleitungText1 ="Sende normale Nachricht an 0175 3255788 für eine normale Nachricht!";
+    static String anleitungText2 ="Sende Musik am Anfang der Nachricht an 0175 3255788 für einen Musikwunsch!";
+    static String anleitungText3 ="Sende Aufgabe am Anfang der Nachricht an 0175 3255788 um eine Aufgabe abzugeben!";
     static StyledDocument messageDoc;
     static String messageHeadline =" ";
     static String aufgabeHeadline = " ";
