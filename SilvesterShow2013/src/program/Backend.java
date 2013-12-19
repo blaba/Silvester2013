@@ -1,7 +1,8 @@
 package program;
 
 import java.io.IOException;
-import java.net.SocketException;
+import java.io.FileInputStream;
+import java.util.Properties;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,18 +10,27 @@ import org.apache.commons.net.ftp.*;
 
 public class Backend {
 	static int nrID,durchlauf,aufgabeID;
+	static Properties prop = new Properties();
 	static Connection connection = null;
 	static String nachricht = "";
+	static private String ftpServer,ftpUser, ftpPwd, sqlServer, sqlUser, sqlDatabase, sqlPwd;
 	static FTPClient ftpClient = new FTPClient();
 	public static void connectFTP(){
-		String server = "blaba.de";
-		String user = "knd2";
-		String pwd = "mc284bukkit";
+		try {
+			prop.load(new FileInputStream("config.properties"));
+			ftpServer = prop.getProperty("ftpUrl");
+			ftpUser = prop.getProperty("ftpUser");
+			ftpPwd = prop.getProperty("ftpPassword");
+		}
+		catch (Exception e){
+			System.out.println("config.properties vorhanden?");
+		}
+		
 		int port = 21;
 		try {
-			ftpClient.connect(server,port);
+			ftpClient.connect(ftpServer,port);
 			System.out.println(ftpClient.getReplyString());
-			ftpClient.login(user, pwd);
+			ftpClient.login(ftpUser, ftpPwd);
 			System.out.println(ftpClient.getReplyString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -45,13 +55,19 @@ public class Backend {
 		
 	}
 	public static Connection connect(){
-		String host = "wan6.ulfcramme.de";
-		String db ="usr_knd2_6";
-		String user = "knd2";
-		String pwd = "data2804sql";
+		try {
+			prop.load(new FileInputStream("config.properties"));
+			sqlServer = prop.getProperty("sqlUrl");
+			sqlDatabase = prop.getProperty("sqlDB");
+			sqlUser = prop.getProperty("sqlUser");
+			sqlPwd = prop.getProperty("sqlPassword");
+		}
+		catch (Exception e){
+			System.out.println("config.properties vorhanden?");
+		}
 		try{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String connectCommand = "jdbc:mysql://"+host+"/"+db+"?user="+user+"&password="+pwd;
+			String connectCommand = "jdbc:mysql://"+sqlServer+"/"+sqlDatabase+"?user="+sqlUser+"&password="+sqlPwd;
 			connection = DriverManager.getConnection(connectCommand);
 			System.out.println("Verbunden");
 			String idInfo = "SELECT id FROM messages ORDER BY id DESC LIMIT 1";

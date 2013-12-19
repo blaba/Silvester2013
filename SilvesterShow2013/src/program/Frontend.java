@@ -262,30 +262,58 @@ public class Frontend extends JFrame implements ActionListener{
 			@Override
 			public void run() {
 				b ++;
-				if(b == 30){
-					pictureList = Backend.getFilesFTP();
-					String pictureURL = pictureList[(int)(pictureList.length*Math.random())];
-					try{
-						URL url = new URL("ftp://knd2:mc284bukkit@blaba.de"+pictureURL);
-						img = ImageIO.read(url);
-						ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
-						image.setImage(image.getImage().getScaledInstance(350, -1 , Image.SCALE_DEFAULT));
-						picture.setIcon(image);
-						System.out.println(url);
+				if(b == 10){
+						//getPictureFTP();
+						System.out.println("pictureSearch");
+						getPictureLocal();
+						b = 0;
 					}
-					catch(Exception e){
-						System.out.println(e);
-					}
-					b = 0;
 				}
 				
-			}
+			
 			
 		};
 		Timer timer = new Timer();
 		Timer timer1 = new Timer();
 		timer.schedule(timertask, 1,1000);
 		timer1.schedule(timerTask1,1,1000);
+	}
+	public static void getPictureLocal(){
+		File dir = new File("C:/pictures/");
+		pictureList = dir.list();
+		/*pictureList = dir.list(new FilenameFilter(){
+			public boolean accept (File d, String name){
+				System.out.println("jep");
+				return name.endsWith(".JPG");
+			}
+		});*/
+		String pictureURL = "C:/pictures/"+pictureList[(int) (pictureList.length*Math.random())];
+		System.out.println(pictureURL);
+		try{
+			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().getImage(pictureURL));
+			image.setImage(image.getImage().getScaledInstance(350, -1, Image.SCALE_DEFAULT));
+			picture.setIcon(image);
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	
+	public static void getPictureFTP(){
+		pictureList = Backend.getFilesFTP();
+		String pictureURL = pictureList[(int)(pictureList.length*Math.random())];
+		try{
+			URL url = new URL("ftp://knd2:mc284bukkit@blaba.de"+pictureURL);
+			//img = ImageIO.read(url);
+			ImageIcon image = new ImageIcon(Toolkit.getDefaultToolkit().createImage(url));
+			image.setImage(image.getImage().getScaledInstance(350, -1 , Image.SCALE_DEFAULT));
+			picture.setIcon(image);
+			System.out.println(url);
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
 	}
 
 
